@@ -391,7 +391,7 @@ if __name__ == "__main__":
 
     if source == "COCO":
         convert_coco_json(
-            "../datasets/coco/annotations",  # directory with *.json
+            "../table_tennis_stroke_postures/valid",  # directory with *.json
             use_segments=True,
             cls91to80=True,
         )
