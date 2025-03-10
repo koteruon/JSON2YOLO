@@ -5,7 +5,6 @@ from collections import defaultdict
 import cv2
 import pandas as pd
 from PIL import Image
-
 from utils import *
 
 
@@ -259,8 +258,8 @@ def convert_coco_json(json_dir="../coco/annotations/", use_segments=False, cls91
 
     # Import json
     for json_file in sorted(Path(json_dir).resolve().glob("*.json")):
-        fn = Path(save_dir) / "labels" / json_file.stem.replace("instances_", "")  # folder name
-        fn.mkdir()
+        fn = Path(json_dir) / "labels"  # folder name
+        fn.mkdir(parents=True, exist_ok=True)
         with open(json_file) as f:
             data = json.load(f)
 
@@ -275,6 +274,7 @@ def convert_coco_json(json_dir="../coco/annotations/", use_segments=False, cls91
         for img_id, anns in tqdm(imgToAnns.items(), desc=f"Annotations {json_file}"):
             img = images[f"{img_id:g}"]
             h, w, f = img["height"], img["width"], img["file_name"]
+            f = f.rsplit("_", 1)[0]
 
             bboxes = []
             segments = []
@@ -391,7 +391,7 @@ if __name__ == "__main__":
 
     if source == "COCO":
         convert_coco_json(
-            "../table_tennis_stroke_postures/valid",  # directory with *.json
+            "../yolo_datasets/forehand_drive_338/train/",  # directory with *.json
             use_segments=True,
             cls91to80=True,
         )
